@@ -14,3 +14,15 @@
 
 }
 
+@font-face {
+    font-family: 'GehenSans';
+    src: url('gehensans-webfont.eot');
+    src: url('gehensans-webfont.eot?#iefix') format('embedded-opentype'),
+         url('gehensans-webfont.woff') format('woff'),
+         url('gehensans-webfont.ttf') format('truetype'),
+         url('gehensans-webfont.svg#GehenSansBook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
