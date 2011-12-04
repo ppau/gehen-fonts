@@ -1,3 +1,35 @@
+Gehen Fonts 0.1
+---------------
+
+These fonts are a fork of DejaVu with specific focus on changing glyphs such as the lower-case a and the lower-case t to look more similar to another, more poorly licensed font, and give it a more modern look and feel.
+
+At the moment I have only modified Gehen Sans and Gehen Sans Condensed Bold, the rest will be done soon.
+
+Available fonts (Sans = sans serif, Mono = monospaced):
+
+Gehen Sans Mono
+Gehen Sans Mono Bold
+Gehen Sans Mono Bold Oblique
+Gehen Sans Mono Oblique
+Gehen Sans
+Gehen Sans Bold
+Gehen Sans Bold Oblique
+Gehen Sans Oblique
+Gehen Sans ExtraLight (experimental)
+Gehen Serif
+Gehen Serif Bold
+Gehen Serif Bold Italic (experimental)
+Gehen Serif Italic (experimental)
+Gehen Sans Condensed (experimental)
+Gehen Sans Condensed Bold (experimental)
+Gehen Sans Condensed Bold Oblique (experimental)
+Gehen Sans Condensed Oblique (experimental)
+Gehen Serif Condensed (experimental)
+Gehen Serif Condensed Bold (experimental)
+Gehen Serif Condensed Bold Italic (experimental)
+Gehen Serif Condensed Italic (experimental)
+
+
 DejaVu fonts 2.33 (c)2004-2011 DejaVu fonts team
 ------------------------------------------------
 
@@ -8,29 +40,6 @@ original look and feel.
 
 DejaVu fonts are based on Bitstream Vera fonts version 1.10.
 
-Available fonts (Sans = sans serif, Mono = monospaced):
-
-DejaVu Sans Mono
-DejaVu Sans Mono Bold
-DejaVu Sans Mono Bold Oblique
-DejaVu Sans Mono Oblique
-DejaVu Sans
-DejaVu Sans Bold
-DejaVu Sans Bold Oblique
-DejaVu Sans Oblique
-DejaVu Sans ExtraLight (experimental)
-DejaVu Serif
-DejaVu Serif Bold
-DejaVu Serif Bold Italic (experimental)
-DejaVu Serif Italic (experimental)
-DejaVu Sans Condensed (experimental)
-DejaVu Sans Condensed Bold (experimental)
-DejaVu Sans Condensed Bold Oblique (experimental)
-DejaVu Sans Condensed Oblique (experimental)
-DejaVu Serif Condensed (experimental)
-DejaVu Serif Condensed Bold (experimental)
-DejaVu Serif Condensed Bold Italic (experimental)
-DejaVu Serif Condensed Italic (experimental)
 
 All fonts are also available as derivative called DejaVu LGC with support
 only for Latin, Greek and Cyrillic scripts.
