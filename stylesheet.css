@@ -27,12 +27,12 @@
 }
 
 @font-face {
-    font-family: 'GehenSansMono';
-    src: url('gehensansmono-webfont.eot');
-    src: url('gehensansmono-webfont.eot?#iefix') format('embedded-opentype'),
-         url('gehensansmono-webfont.woff') format('woff'),
-         url('gehensansmono-webfont.ttf') format('truetype'),
-         url('gehensansmono-webfont.svg#GehenSansMonoBook') format('svg');
+    font-family: 'GehenSansMonoProgrammer';
+    src: url('gehensansmono-programmer-webfont.eot');
+    src: url('gehensansmono-programmer-webfont.eot?#iefix') format('embedded-opentype'),
+         url('gehensansmono-programmer-webfont.woff') format('woff'),
+         url('gehensansmono-programmer-webfont.ttf') format('truetype'),
+         url('gehensansmono-programmer-webfont.svg#GehenSansMonoProgrammer') format('svg');
     font-weight: normal;
     font-style: normal;
 
