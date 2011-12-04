@@ -26,3 +26,15 @@
 
 }
 
+@font-face {
+    font-family: 'GehenSansMono';
+    src: url('gehensansmono-webfont.eot');
+    src: url('gehensansmono-webfont.eot?#iefix') format('embedded-opentype'),
+         url('gehensansmono-webfont.woff') format('woff'),
+         url('gehensansmono-webfont.ttf') format('truetype'),
+         url('gehensansmono-webfont.svg#GehenSansMonoBook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
