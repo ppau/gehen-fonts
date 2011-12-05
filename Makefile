@@ -257,6 +257,11 @@ munge: $(NORMSFD)
 	cp $(TMPDIR)/$$sfd.norm $(SRCDIR)/$$sfd ;\
 	done
 
+mono-to-programmer-ttf :
+	mkdir tmp
+	cp src/GehenSansMono.sfd src/GehenSansMono-Programmer.sfd
+	patch src/GehenSansMono-Programmer.sfd scripts/mono-to-programmer.patch
+
 full : $(FULLTTF) $(addprefix $(BUILDDIR)/, $(GENDOCFULL))
 
 sans : $(addprefix $(BUILDDIR)/, GehenSans.ttf $(GENDOCSANS))
@@ -266,15 +271,18 @@ lgc : $(LGCTTF) $(addprefix $(BUILDDIR)/, $(GENDOCLGC))
 ttf : full-ttf sans-ttf lgc-ttf
 
 full-webfonts : full-ttf 
-	make full-woff full-svg full-eot
+	make full-woff full-svg full-eot webfont-css
 
-full-ttf : $(FULLTTF)
+full-ttf : mono-to-programmer-ttf $(FULLTTF)
 
 full-woff : $(FULLWOFF) 
 
 full-svg : $(FULLSVG)
 
 full-eot : $(FULLEOT)
+
+webfont-css :
+	python scripts/make-css.py $(FULLTTF) > $(BUILDDIR)/webfonts.css
 
 sans-ttf: $(BUILDDIR)/GehenSans.ttf
 
