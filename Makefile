@@ -1,4 +1,4 @@
-.PHONY: all check munge full sans lgc ttf full-ttf sans-ttf lgc-ttf status dist src-dist full-dist sans-dist lgc-dist norm check-harder pre-patch clean
+.PHONY: all check munge full sans lgc ttf full-ttf full-webfonts full-woff full-svg full-eot sans-ttf lgc-ttf status dist src-dist full-dist sans-dist lgc-dist norm check-harder pre-patch clean
 
 # Release version
 VERSION = 0.1_2.33
@@ -34,20 +34,20 @@ LGCARCHIVE  = gehen-lgc-fonts-ttf-$(ARCHIVEVER)
 ARCHIVEEXT = .zip .tar.bz2
 SUMEXT     = .zip.md5 .tar.bz2.md5 .tar.bz2.sha512
 
-OLDSTATUS   = $(DOCDIR)/status.txt
-BLOCKS      = $(RESOURCEDIR)/Blocks.txt
-UNICODEDATA = $(RESOURCEDIR)/UnicodeData.txt
-FC-LANG     = $(RESOURCEDIR)/fc-lang
+OLDSTATUS    = $(DOCDIR)/status.txt
+BLOCKS       = $(RESOURCEDIR)/Blocks.txt
+UNICODEDATA  = $(RESOURCEDIR)/UnicodeData.txt
+FC-LANG      = $(RESOURCEDIR)/fc-lang
 
-GENERATE    = $(SCRIPTSDIR)/generate.pe
-TTPOSTPROC  = $(SCRIPTSDIR)/ttpostproc.pl
-LGC         = $(SCRIPTSDIR)/lgc.pe
-UNICOVER    = $(SCRIPTSDIR)/unicover.pl
-LANGCOVER   = $(SCRIPTSDIR)/langcover.pl
-STATUS	    = $(SCRIPTSDIR)/status.pl
-PROBLEMS    = $(SCRIPTSDIR)/problems.pl
-NORMALIZE   = $(SCRIPTSDIR)/sfdnormalize.pl
-NARROW      = $(SCRIPTSDIR)/narrow.pe
+GENERATE     = $(SCRIPTSDIR)/generate.pe
+TTPOSTPROC   = $(SCRIPTSDIR)/ttpostproc.pl
+LGC          = $(SCRIPTSDIR)/lgc.pe
+UNICOVER     = $(SCRIPTSDIR)/unicover.pl
+LANGCOVER    = $(SCRIPTSDIR)/langcover.pl
+STATUS	     = $(SCRIPTSDIR)/status.pl
+PROBLEMS     = $(SCRIPTSDIR)/problems.pl
+NORMALIZE    = $(SCRIPTSDIR)/sfdnormalize.pl
+NARROW       = $(SCRIPTSDIR)/narrow.pe
 
 SRC      := $(wildcard $(SRCDIR)/*.sfd)
 SFDFILES := $(patsubst $(SRCDIR)/%, %, $(SRC))
@@ -56,6 +56,9 @@ NORMSFD  := $(patsubst %, %.norm, $(FULLSFD))
 LGCSFD   := $(patsubst $(SRCDIR)/Gehen%.sfd, $(TMPDIR)/GehenLGC%.sfd, $(SRC))
 FULLTTF  := $(patsubst $(TMPDIR)/%.sfd, $(BUILDDIR)/%.ttf, $(FULLSFD))
 LGCTTF   := $(patsubst $(TMPDIR)/%.sfd, $(BUILDDIR)/%.ttf, $(LGCSFD))
+FULLWOFF := $(patsubst $(BUILDDIR)/%.ttf, $(BUILDDIR)/%.woff, $(wildcard $(BUILDDIR)/*.ttf))
+FULLSVG  := $(patsubst $(BUILDDIR)/%.ttf, $(BUILDDIR)/%.svg, $(wildcard $(BUILDDIR)/*.ttf))
+FULLEOT  := $(patsubst $(BUILDDIR)/%.ttf, $(BUILDDIR)/%.eot, $(wildcard $(BUILDDIR)/*.ttf))
 
 FONTCONF     := $(wildcard $(FONTCONFDIR)/*.conf)
 FONTCONFLGC  := $(wildcard $(FONTCONFDIR)/*lgc*.conf)
@@ -88,11 +91,25 @@ $(TMPDIR)/GehenLGC%.sfd: $(TMPDIR)/Gehen%.sfd
 $(BUILDDIR)/%.ttf: $(TMPDIR)/%.sfd
 	@echo "[3] $< => $@"
 	install -d $(dir $@)
-	$(GENERATE) $<
+	$(GENERATE) ttf $<
 	mv $<.ttf $@
 	$(TTPOSTPROC) $@
 	$(RM) $@~
 	touch -r $< $@
+
+$(BUILDDIR)/%.woff: $(BUILDDIR)/%.ttf
+	@echo "[3] $< => $@"
+	$(GENERATE) woff $<
+	mv $<.woff $@
+
+$(BUILDDIR)/%.svg: $(BUILDDIR)/%.ttf
+	@echo "[3] $< => $@"
+	$(GENERATE) svg $<
+	mv $<.svg $@
+
+$(BUILDDIR)/%.eot: $(BUILDDIR)/%.ttf
+	@echo "[3] $< => $@"
+	ttf2eot < $< > $@
 
 $(BUILDDIR)/status.txt: $(FULLSFD)
 	@echo "[4] => $@"
@@ -248,7 +265,16 @@ lgc : $(LGCTTF) $(addprefix $(BUILDDIR)/, $(GENDOCLGC))
 
 ttf : full-ttf sans-ttf lgc-ttf
 
+full-webfonts : full-ttf 
+	make full-woff full-svg full-eot
+
 full-ttf : $(FULLTTF)
+
+full-woff : $(FULLWOFF) 
+
+full-svg : $(FULLSVG)
+
+full-eot : $(FULLEOT)
 
 sans-ttf: $(BUILDDIR)/GehenSans.ttf
 

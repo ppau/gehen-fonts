@@ -23,7 +23,7 @@ endif
 SetPref("FoundryName", "Gehen")
 # first 4 characters of TTFFoundry are used for achVendId
 SetPref("TTFFoundry", "Gehen")
-i = 1
+i = 2
 while ( i < $argc )
   Open($argv[i], 1)
   gen_flags = def_gen_flags
@@ -37,7 +37,7 @@ while ( i < $argc )
   if (Strcasestr ($fontname, "ExtraLight") > -1)
     gen_flags = exp_gen_flags
   endif
-  Generate( $curfont + ".ttf", "", gen_flags)
+  Generate( $curfont + "." + $argv[1], "", gen_flags)
   Close()
   i++
 endloop
