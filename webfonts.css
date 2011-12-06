@@ -33,11 +33,11 @@
 
 @font-face {
     font-family: 'GehenSans';
-    src: url('GehenSans-Bold.eot');
-    src: url('GehenSans-Bold.eot?#iefix') format('embedded-opentype'),
-         url('GehenSans-Bold.woff') format('woff'),
-         url('GehenSans-Bold.ttf') format('truetype'),
-         url('GehenSans-Bold.svg#GehenSans') format('svg');
+    src: url('GehenSansCondensed-Bold.eot');
+    src: url('GehenSansCondensed-Bold.eot?#iefix') format('embedded-opentype'),
+         url('GehenSansCondensed-Bold.woff') format('woff'),
+         url('GehenSansCondensed-Bold.ttf') format('truetype'),
+         url('GehenSansCondensed-Bold.svg#GehenSansCondensed') format('svg');
     font-weight: bold;
     font-style: normal;
 }
