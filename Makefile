@@ -1,9 +1,9 @@
-.PHONY: all check munge full sans lgc ttf full-ttf full-webfonts full-woff full-svg full-eot sans-ttf lgc-ttf status dist src-dist full-dist sans-dist lgc-dist norm check-harder pre-patch clean
+.PHONY: all check munge full sans lgc ttf full-ttf full-web full-woff full-svg full-eot sans-ttf lgc-ttf status dist src-dist ttf-dist sans-dist lgc-dist norm check-harder pre-patch clean
 
 # Release version
-VERSION = 0.1_2.33
+VERSION = 0.1
 # Snapshot version
-SNAPSHOT = 
+SNAPSHOT = dev
 # Initial source directory, assumed read-only
 SRCDIR  = src
 # Directory where temporary files live
@@ -12,6 +12,8 @@ TMPDIR  = tmp
 BUILDDIR  = build
 # Directory where final archives are created
 DISTDIR = dist
+# What is a Python?
+PYTHON = python3.2
 
 # Release layout
 FONTCONFDIR = fontconfig
@@ -27,7 +29,8 @@ ARCHIVEVER = $(VERSION)-$(SNAPSHOT)
 endif
 
 SRCARCHIVE  = gehen-fonts-$(ARCHIVEVER)
-FULLARCHIVE = gehen-fonts-ttf-$(ARCHIVEVER)
+WEBARCHIVE  = gehen-fonts-web-$(ARCHIVEVER)
+TTFARCHIVE  = gehen-fonts-ttf-$(ARCHIVEVER)
 SANSARCHIVE = gehen-sans-ttf-$(ARCHIVEVER)
 LGCARCHIVE  = gehen-lgc-fonts-ttf-$(ARCHIVEVER)
 
@@ -194,7 +197,19 @@ $(TMPDIR)/$(SRCARCHIVE): $(addprefix $(BUILDDIR)/, $(GENDOCFULL) Makefile) $(FUL
 	install -p -m 0644 $(addprefix $(BUILDDIR)/, $(GENDOCFULL)) \
 	                   $(STATICDOC) $(STATICSRCDOC) $@/$(DOCDIR)
 
-$(TMPDIR)/$(FULLARCHIVE): full
+$(TMPDIR)/$(WEBARCHIVE): web
+	@echo "[8] => $@"
+	install -d -m 0755 $@/woff
+	install -d -m 0755 $@/eot
+	install -d -m 0755 $@/svg
+	install -d -m 0755 $@/$(DOCDIR)
+	install -p -m 0644 $(FULLWOFF) $@/woff
+	install -p -m 0644 $(FULLEOT) $@/eot
+	install -p -m 0644 $(FULLSVG) $@/svg
+	install -p -m 0644 $(addprefix $(BUILDDIR)/, $(GENDOCFULL)) \
+	                   $(STATICDOC) $@/$(DOCDIR)
+
+$(TMPDIR)/$(TTFARCHIVE): full
 	@echo "[8] => $@"
 	install -d -m 0755 $@/$(TTFDIR)
 	install -d -m 0755 $@/$(FONTCONFDIR)
@@ -258,7 +273,7 @@ munge: $(NORMSFD)
 	done
 
 mono-to-programmer-ttf :
-	mkdir tmp
+	mkdir -p tmp
 	cp src/GehenSansMono.sfd src/GehenSansMono-Programmer.sfd
 	patch src/GehenSansMono-Programmer.sfd scripts/mono-to-programmer.patch
 
@@ -270,8 +285,10 @@ lgc : $(LGCTTF) $(addprefix $(BUILDDIR)/, $(GENDOCLGC))
 
 ttf : full-ttf sans-ttf lgc-ttf
 
-full-webfonts : full-ttf 
-	make full-woff full-svg full-eot webfont-css
+web : full-web
+
+full-web : full-ttf 
+	make full-woff full-svg full-eot web-css
 
 full-ttf : mono-to-programmer-ttf $(FULLTTF)
 
@@ -281,7 +298,7 @@ full-svg : $(FULLSVG)
 
 full-eot : $(FULLEOT)
 
-webfont-css :
+web-css :
 	python scripts/make-css.py $(FULLTTF) > $(BUILDDIR)/webfonts.css
 
 sans-ttf: $(BUILDDIR)/GehenSans.ttf
@@ -290,15 +307,17 @@ lgc-ttf : $(LGCTTF)
 
 status : $(addprefix $(BUILDDIR)/, $(GENDOCFULL))
 
-dist : src-dist full-dist sans-dist lgc-dist
+dist : src-dist ttf-dist sans-dist lgc-dist web-dist
 
 src-dist :  $(addprefix $(DISTDIR)/$(SRCARCHIVE),  $(ARCHIVEEXT) $(SUMEXT))
 
-full-dist : $(addprefix $(DISTDIR)/$(FULLARCHIVE), $(ARCHIVEEXT) $(SUMEXT))
+ttf-dist : $(addprefix $(DISTDIR)/$(TTFARCHIVE), $(ARCHIVEEXT) $(SUMEXT))
 
 sans-dist : $(addprefix $(DISTDIR)/$(SANSARCHIVE), $(ARCHIVEEXT) $(SUMEXT))
 
 lgc-dist :  $(addprefix $(DISTDIR)/$(LGCARCHIVE),  $(ARCHIVEEXT) $(SUMEXT))
+
+web-dist : $(addprefix $(DISTDIR)/$(WEBARCHIVE), $(ARCHIVEEXT) $(SUMEXT))
 
 norm : $(NORMSFD)
 
@@ -334,3 +353,9 @@ condensed: $(NORMSFD)
 	cp $(TMPDIR)/GehenSerif-Bold.sfd.norm.narrow.norm $(TMPDIR)/GehenSerifCondensed-Bold.sfd.norm
 	cp $(TMPDIR)/GehenSerif-Italic.sfd.norm.narrow.norm $(TMPDIR)/GehenSerifCondensed-Italic.sfd.norm
 	cp $(TMPDIR)/GehenSerif-BoldItalic.sfd.norm.narrow.norm $(TMPDIR)/GehenSerifCondensed-BoldItalic.sfd.norm
+
+deploy : 
+	$(PYTHON) scripts/add-fonts.py `cat ../github-token.txt` \
+		dist/$(TTFARCHIVE).tar.bz2 \
+		dist/$(SANSARCHIVE).tar.bz2 \
+		dist/$(WEBARCHIVE).tar.bz2
